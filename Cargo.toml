@@ -1,0 +1,18 @@
+[package]
+name = "wgpu-hello-compute-example"
+version = "0.0.1"
+edition = "2021"
+description = "wgpu hello compute example"
+
+[[bin]]
+name = "hello-compute"
+path = "src/main.rs"
+
+[dependencies]
+bytemuck = "*"
+env_logger = "*"
+futures-intrusive = "*"
+pollster = "*"
+wgpu = "*"
+# winit.workspace = true
+
