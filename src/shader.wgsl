@@ -1,25 +1,33 @@
+
+struct CharacterData {
+    ascii_code: u32,
+    index: u32,
+};
+
 @group(0)
 @binding(0)
-var<storage, read_write> v_indices: array<u32>; // this is used as both input and output for convenience
+var<storage, read_write> v_indices: array<CharacterData>; // this is used as both input and output for convenience
 
 @compute
 @workgroup_size(29)
 fn main(@builtin(global_invocation_id) global_id: vec3<u32>, @builtin(local_invocation_id) local_id: vec3<u32>) {
-    v_indices[global_id.x] = ascii_to_ark_char(v_indices[global_id.x]) * (1u + local_id.x);
+    var c_data = v_indices[global_id.x];
+    c_data.ascii_code = ascii_to_ark_char(c_data.ascii_code) * (1u + c_data.index);
+    v_indices[global_id.x] = c_data;
+    v_indices[global_id.x] = v_indices[global_id.x];
 
-    if local_id.x == 28u {
-        var counter = 0u;
-
-        for (var i = 0u; i < 29u; i++) {
-            if v_indices[global_id.x - 28u + i] == 0u {
-                break;
-            } else {
-                counter += v_indices[global_id.x - 28u + i];
-            }
-        }
+// local_id.x == 28u {
+//    var counter = 0u;
+//        for (var i = 0u; i < 29u; i++) {
+//            if v_indices[global_id.x - 28u + i]. == 0u {
+//                break;
+//            } else {
+//                counter += v_indices[global_id.x - 28u + i];
+//            }
+//        }
         
-        v_indices[global_id.x - 28u] = ark_char_to_ascii(counter % 29u);
-    }
+//        v_indices[global_id.x - 28u] = ark_char_to_ascii(counter % 29u);
+//    }
 }
 
 fn ascii_to_ark_char(char: u32) -> u32 {

@@ -9,7 +9,7 @@ name = "hello-compute"
 path = "src/main.rs"
 
 [dependencies]
-bytemuck = "*"
+bytemuck = {version = "1.13.1", features = ["derive"]}
 env_logger = "*"
 futures-intrusive = "*"
 pollster = "*"
